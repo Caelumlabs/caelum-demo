@@ -2,8 +2,7 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
-// const Caelum = require('caelum')
-const Caelum = require('../../../caelum-sdk/src/index');
+const Caelum = require('caelum-sdk');
 const caelum = new Caelum(process.env.SUBSTRATE);
 
 // Main function.
@@ -21,7 +20,6 @@ const claimAdmin = async (did, secretCode) => {
 
   // Register the user with the secret Code.
   const peerDid = await user.registerConnectionString(session.connectionString, secretCode)
-  process.exit();
 
   // Export user to JSON.
   const userJson = await user.export()
