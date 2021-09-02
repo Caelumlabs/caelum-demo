@@ -18,7 +18,10 @@ const users = async (did) => {
 
   // After login. Set the session parameters to be able to interact with the idspace.
 
-  await idspace.setSession(user.sessions[did].tokenApi, user.sessions[did].signedCredential.credentialSubject.capability.type)
+  await idspace.setSession(
+    user.sessions[did].tokenApi,
+    user.sessions[did].signedCredential.credentialSubject.capability.type
+  );
 
   // Get a list of the users.
   console.log('Get users')

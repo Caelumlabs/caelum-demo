@@ -319,10 +319,10 @@
   dependencies:
     "node-gyp-build" "^4.2.0"
 
-"caelum-sdk@^2.0.0":
-  "integrity" "sha512-u5HAaRAe74m8++n3X1kswIGBZNt60Pr5c8Aw7HqoCRK8Db5VbId9/WMlajAYknR9ahRUmCltoVREKXTyVctEKw=="
-  "resolved" "https://registry.npmjs.org/caelum-sdk/-/caelum-sdk-2.0.0.tgz"
-  "version" "2.0.0"
+"caelum-sdk@^2.0.2":
+  "integrity" "sha512-tqOLX+N7S/xlTkFuM1oIxMfURWEbKizgNeQGUlGt3/zwlz4yVBpn1T7hNlWYC8+HHkSIbWnGYMyMaiLqNnJLOQ=="
+  "resolved" "https://registry.npmjs.org/caelum-sdk/-/caelum-sdk-2.0.2.tgz"
+  "version" "2.0.2"
   dependencies:
     "@polkadot/api" "^4.17.1"
     "@polkadot/types" "^4.17.1"
