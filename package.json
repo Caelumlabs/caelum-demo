@@ -1,0 +1,15 @@
+{
+  "name": "caelum-valls",
+  "version": "1.0.0",
+  "description": "Caelum Valls Playgroud",
+  "main": "src/index.js",
+  "repository": "https://gitlab.com/caelum-tech/ecosystems/caelum-valls",
+  "author": "Alex Puig",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "caelum-sdk": "^2.0.0",
+    "dotenv": "^8.2.0",
+    "faker": "^5.4.0"
+  }
+}
