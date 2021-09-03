@@ -5,15 +5,13 @@ const FormData = require('form-data')
 const filePath = __dirname + '/test.jpg'
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
-// const Caelum = require('caelum-sdk')
-const Caelum = require('../../../caelum-sdk/src/index')
+const Caelum = require('caelum-sdk')
 const caelum = new Caelum(process.env.SUBSTRATE)
 const adminInfo = require('../json/admin.json')
 
 // Main function.
 const setup = async (did, workflowId, apiToken) => {
   const {idspace} = await caelum.connect(false, did);
-  console.log(idspace.info);
 
   // Call Workflow
   const callWF = {

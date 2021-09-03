@@ -21,7 +21,8 @@ const setup = async (did) => {
     issuedTo: 'Persona'
   }
   let api = await idspace.sdk.call('tag', 'add', {data: tagForm})
-
+  console.log(api)
+/*
   tagForm.title = 'Certificat de compostatge'
   tagForm.description = 'Certificat de Compostatge per part del ciutadà',
   api = await idspace.sdk.call('tag', 'add', {data: tagForm})
@@ -32,7 +33,7 @@ const setup = async (did) => {
 
   api = await idspace.sdk.call('api', 'getAll')
   console.log(' Certificates: ', api.length)
-
+  */
   process.exit()
 }
 
