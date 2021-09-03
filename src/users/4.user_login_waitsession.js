@@ -9,15 +9,21 @@ const caelum = new Caelum(process.env.SUBSTRATE)
 // Main function.
 const users = async (did) => {
   // Connect to idspace and get org
-  await caelum.connect();
-  const idspace = await caelum.getOrganizationFromDid(did);
+  const {user, idspace} = await caelum.connect(adminInfo, did);
+
   // Get session with the Idspace.
   const session = await idspace.getSession('admin');
   console.log('Session: ', session.sessionIdString, session.connectionString);
-  const result = await idspace.waitSession(session.sessionIdString);
-  console.log('Result: ', result);
+  idspace.waitSession(session.sessionIdString)
+    .then((result) => {
+	  console.log('Login Successful: ', result);
+	  await caelum.diconnect();
+      process.exit();
+	});
 
-  process.exit()
+  // Fullfill session request.
+  await user.login(idspace, 'admin', session.sessionIdString);
+  
 }
 
 /**
