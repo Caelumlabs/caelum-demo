@@ -3,18 +3,14 @@ const path = require('path')
 const faker = require('faker')
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
-const Caelum = require('caelum')
-const caelum = new Caelum(process.env.STORAGE, process.env.GOVERNANCE)
+const Caelum = require('caelum-sdk');
+const caelum = new Caelum(process.env.SUBSTRATE);
 const adminInfo = require('../json/admin.json')
 
 // Main function.
 const setup = async (did) => {
-  const user = await caelum.newUser(adminInfo)
-  const idspace = await caelum.loadOrganization(did)
-
-  // Admin login and set session
-  await user.login(did, 'admin')
-  await idspace.setSession(user.sessions[did].tokenApi, user.sessions[did].capacity)
+  // Connect and Login.
+  const {user, idspace} = await caelum.connect(adminInfo, did);
 
   // add a new API
   const projectForm = {
@@ -25,6 +21,7 @@ const setup = async (did) => {
   // Add one API.
   let result = await idspace.sdk.call('ide', 'addProject', {data: projectForm})
   const projectId = result.id
+  console.log(result)
 
   process.exit()
 }

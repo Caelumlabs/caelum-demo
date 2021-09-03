@@ -9,26 +9,13 @@ const adminInfo = require('../json/admin.json')
 // Main function.
 const users = async (did) => {
   // Load User and Idspace.
-  await caelum.connect();
-  const user = await caelum.newUser(adminInfo)
-  const idspace = await caelum.getOrganizationFromDid(did);
-
-  // Login as admin to the idspace.
-  await user.login(did, 'admin')
-
-  // After login. Set the session parameters to be able to interact with the idspace.
-
-  await idspace.setSession(
-    user.sessions[did].tokenApi,
-    user.sessions[did].signedCredential.credentialSubject.capability.type
-  );
+  const {user, idspace} = await caelum.connect(adminInfo, did);
 
   // Get a list of the users.
-  console.log('Get users')
   const users = await idspace.sdk.call('user', 'getAll')
   console.log('Total users: ', users.length)
 
-  console.log(users);
+  // console.log(users);
 
   // Get One user.
   const admin = await idspace.sdk.call('user', 'getOne', {params: [users[0].userId]})

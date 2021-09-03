@@ -3,18 +3,14 @@ const path = require('path')
 const faker = require('faker')
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
-const Caelum = require('caelum')
-const caelum = new Caelum(process.env.STORAGE, process.env.GOVERNANCE)
-const adminInfo = require('../json/admin.json')
+const Caelum = require('caelum-sdk');
+const caelum = new Caelum(process.env.SUBSTRATE);
+const adminInfo = require('../json/admin.json');
 
 // Main function.
 const setup = async (did) => {
-  const user = await caelum.newUser(adminInfo)
-  const idspace = await caelum.loadOrganization(did)
-
-  // Admin login and set session
-  await user.login(did, 'admin')
-  await idspace.setSession(user.sessions[did].tokenApi, user.sessions[did].capacity)
+  // Load User and Idspace.
+  const {user, idspace} = await caelum.connect(adminInfo, did);
 
   const auth = {
     url: "https://api.pre.apptramit.com/authorize/login",

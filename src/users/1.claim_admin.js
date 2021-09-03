@@ -13,13 +13,14 @@ const claimAdmin = async (did, secretCode) => {
 
   // Opens a new session with the Idspace.
   const idspace = await caelum.getOrganizationFromDid(did);
+  console.log(idspace.info);
   const session = await idspace.getSession('admin');
 
   // This is the QR code we can see in the Web.
   console.log('QR Code : ' + session.connectionString)
 
   // Register the user with the secret Code.
-  const peerDid = await user.registerConnectionString(session.connectionString, secretCode)
+  await user.registerConnectionString(session.connectionString, secretCode)
 
   // Export user to JSON.
   const userJson = await user.export()

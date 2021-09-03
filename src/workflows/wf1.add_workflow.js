@@ -3,25 +3,20 @@ const path = require('path')
 const faker = require('faker')
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
-const Caelum = require('caelum')
-const caelum = new Caelum(process.env.STORAGE, process.env.GOVERNANCE)
-const adminInfo = require('../json/admin.json')
+const Caelum = require('caelum-sdk');
+const caelum = new Caelum(process.env.SUBSTRATE);
+const adminInfo = require('../json/admin.json');
 
 // Main function.
 const setup = async (did, projectId) => {
-  const user = await caelum.newUser(adminInfo)
-  const idspace = await caelum.loadOrganization(did)
-
-  // Admin login and set session
-  await user.login(did, 'admin')
-  await idspace.setSession(user.sessions[did].tokenApi, user.sessions[did].capacity)
+  // Load User and Idspace.
+  const {user, idspace} = await caelum.connect(adminInfo, did);
 
   // Add one workflow.
   const workflowForm = require('../json/workflow1.json')
   workflowForm.projectId = projectId
   let workflow = await idspace.sdk.call('ide', 'addWorkflow', {data: workflowForm})
   workflowForm.workflowId = workflow.workflowId
-
   // Save the draft.
   workflow = await idspace.sdk.call('ide', 'saveDraft', {data: workflowForm})
 

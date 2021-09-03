@@ -9,14 +9,7 @@ const adminInfo = require('../json/admin.json')
 // Main function.
 const users = async (did, userId) => {
   // Load User and Idspace.
-  await caelum.connect();
-  const user = await caelum.newUser(adminInfo);
-  const idspace = await caelum.getOrganizationFromDid(did);
-  await user.login(did, 'admin')
-  await idspace.setSession(
-    user.sessions[did].tokenApi,
-    user.sessions[did].signedCredential.credentialSubject.capability.type
-  );
+  const {user, idspace} = await caelum.connect(adminInfo, did);
 
   // Issue a new capacity.
   const capability = { userId: userId, subject: 'member-technology' }
