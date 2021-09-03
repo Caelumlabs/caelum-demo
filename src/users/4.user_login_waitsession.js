@@ -11,7 +11,6 @@ const users = async (did) => {
   // Connect to idspace and get org
   await caelum.connect();
   const idspace = await caelum.getOrganizationFromDid(did);
-  console.log(idspace);
   // Get session with the Idspace.
   const session = await idspace.getSession('admin');
   console.log('Session: ', session.sessionIdString, session.connectionString);
