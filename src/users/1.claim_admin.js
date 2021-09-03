@@ -13,7 +13,6 @@ const claimAdmin = async (did, secretCode) => {
 
   // Opens a new session with the Idspace.
   const idspace = await caelum.getOrganizationFromDid(did);
-  console.log(idspace.info);
   const session = await idspace.getSession('admin');
 
   // This is the QR code we can see in the Web.
