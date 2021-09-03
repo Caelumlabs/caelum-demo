@@ -14,9 +14,8 @@ const users = async (did) => {
   console.log(idspace);
   // Get session with the Idspace.
   const session = await idspace.getSession('admin');
-  console.log('QR Code : ' + session.connectionString)
-  console.log('Session: ', session.sessionId, session.connectionString);
-  const result = await idspace.waitSession(session.sessionId);
+  console.log('Session: ', session.sessionIdString, session.connectionString);
+  const result = await idspace.waitSession(session.sessionIdString);
   console.log('Result: ', result);
 
   process.exit()
