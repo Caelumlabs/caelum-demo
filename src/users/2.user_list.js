@@ -15,8 +15,6 @@ const users = async (did) => {
   const users = await idspace.sdk.call('user', 'getAll')
   console.log('Total users: ', users.length)
 
-  // console.log(users);
-
   // Get One user.
   const admin = await idspace.sdk.call('user', 'getOne', {params: [users[0].userId]})
   console.log('User: ', admin)
