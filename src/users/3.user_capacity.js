@@ -11,15 +11,16 @@ const adminInfo = require('../json/admin.json')
 const users = async (did, userId) => {
   // Load User and Idspace.
   const {user, idspace} = await caelum.connect(adminInfo, did);
-  // Issue a new capacity.
+  // Issue a new capability.
   const capability = { userId: userId, subject: 'member-technology' }
    let result = await idspace.sdk.call('user', 'issue', {data: capability})
 
-  // List Notifications and find the new capacity. We need to login as peerdid (user), not as a particular credential (admin)
+  // List Notifications and find the new capability.
+  // We need to login as peerdid (user), not as a particular credential (admin)
   await user.login(idspace, 'peerdid')
   const notifications = await idspace.sdk.call('auth', 'notifications')
 
-  // Claim capacity for the user.
+  // Claim capability for the user.
   await user.claim(idspace, notifications[0].notificationId)
 
   // The wallet has been updated. Save changes.

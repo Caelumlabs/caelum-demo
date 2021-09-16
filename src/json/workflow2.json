@@ -6,8 +6,8 @@
   "name": "Certficat de Compostatge",
   "description": "Procés alta de certificat de compostatge",
   "parties": [
-    {"id":1,"name":"tramit","type":"API","capacity":"","did":"","apiToken":""},
-    {"id":2,"name":"verificador","type":"Certificate","capacity":"member-technology","did":""}
+    {"id":1,"name":"tramit","type":"API","capability":"","did":"","apiToken":""},
+    {"id":2,"name":"verificador","type":"Certificate","capability":"member-technology","did":""}
   ],
   "documents": [
     {"id":1,"name":"ciutada","type":"persona","hasFile":false,"document":"","certificateId":"","specifyFields":false,"fields":false},

@@ -10,7 +10,7 @@
         "id":1,
         "name":"tramit",
         "type":"API",
-        "capacity":"",
+        "capability":"",
         "did":"",
         "start":true,
         "apiToken":""
@@ -19,7 +19,7 @@
         "id":2,
         "name":"verificador",
         "type":"Certificate",
-        "capacity":"member-technology",
+        "capability":"member-technology",
         "did":"",
         "start":false
 	}

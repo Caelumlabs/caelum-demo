@@ -7,8 +7,8 @@
   "name": "Certficat Deixalleria desde Web",
   "description": "Procés alta de certificat de deixalleria",
   "parties": [
-    {"id":1,"name":"tramit","type":"API","capacity":"","did":"","start":true,"apiToken":""},
-    {"id":2,"name":"deixalleria","type":"API","capacity":"","did":"","start":true,"apiToken":""}
+    {"id":1,"name":"tramit","type":"API","capability":"","did":"","start":true,"apiToken":""},
+    {"id":2,"name":"deixalleria","type":"API","capability":"","did":"","start":true,"apiToken":""}
   ],
   "documents": [
     {"id":1,"name":"ciutada","type":"persona","hasFile":false,"document":"","certificateId":"","specifyFields":false,"fields":false},
