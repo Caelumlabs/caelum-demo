@@ -20,8 +20,8 @@ const addCertificate = async (did) => {
   // Certificate example
   const tagForm = {
     title: 'Spacewalk certificate', // string
-    description: 'The astronaut got out of hte shuttle while in space', // string | null
-    url: 'https://valls.cat', // string | null
+    description: 'The astronaut got out of the shuttle while in space', // string | null
+    url: 'https://www.nasa.gov', // string | null
     logo: null, // string | null
     requirements: null, // string | null
     issuedTo: 'Persona'  // string['Nominal', 'Organisation', 'Persona'] - 'Organisation' is default
