@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const rootPath = path.join(__dirname, "../../");
 require("dotenv").config({ path: path.join(rootPath, ".env") });
 
-const Caelum = require('caelum-sdk');
+const Caelum = require("caelum-sdk");
 const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 
 const claimAdmin = async (did, secretCode) => {
@@ -12,7 +12,7 @@ const claimAdmin = async (did, secretCode) => {
   if (did == null || did === "" ||
     secretCode == null || secretCode === "") {
     console.error("Missing variables or their values in .env");
-    process.exit();
+    return;
   }
 
   await caelum.connect();
@@ -21,8 +21,8 @@ const claimAdmin = async (did, secretCode) => {
   const user = await caelum.newUser();
 
   // Opens a new session with the Idspace
-  const organisation = await caelum.getOrganizationFromDid(did);
-  const session = await organisation.getSession('admin');
+  const idspace = await caelum.getOrganizationFromDid(did);
+  const session = await idspace.getSession("admin");
   console.log("QR Code:" + session.connectionString);
 
   // Complete the registration process (with the secretCode received via email)
@@ -33,7 +33,7 @@ const claimAdmin = async (did, secretCode) => {
   const userJson = await user.export();
   fs.writeFileSync(path.join(rootPath, "data", "admin.json"), userJson, "utf8");
 
-  process.exit();
+  return;
 }
 
 const main = async () => {
@@ -41,8 +41,8 @@ const main = async () => {
     await claimAdmin(process.env.DID, process.env.SECRET);
   } catch (error) {
     console.log("Something went wrong!", error);
-    process.exit();
   }
+  process.exit();
 }
 
 main();
