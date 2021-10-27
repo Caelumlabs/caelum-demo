@@ -53,7 +53,7 @@ Most of the other scripts can be executed in no particular order, but we suggest
 
 **Location**
 
-_src/users/1.claim_admin_
+[_src/users/1.claim_admin_]() TODO
 
 **Background**
 
@@ -69,7 +69,7 @@ This process applies to every new user added to the platform.
 
 **Execution**
 
-Run the script to complete the registration process as admin of the platform.
+Run the command below to complete the registration process as admin of the platform.
 
 By the end of the process you should be able to locate a JSON file with your keys and your admin credential at `data/admin.json`.
 
@@ -77,46 +77,49 @@ By the end of the process you should be able to locate a JSON file with your key
 node src/users/1.claim_admin
 ```
 
-### 2. Add a tag or certificate
+### 2. Add other users
 
 **Location**
 
-_src/certificates/1.add_certificate_
+[_src/users/3.add_user_]() TODO
 
 **Background**
 
-Create a certificate that you can issue later.
+Add more users to the organisation by providing their details.
+
+Run the script [add_capability]() TO DO inmediately after, to define the relationship between them and the organisation.
 
 **Execution**
 
-Run the script to add a certificate. Certificates are also registered with the blockchain.
+Run the command below to add a user. Send data as per `userForm`.
 
-Types, request, response, etc. TODO
+- All fields required except for `telephone `
+- Field `email` must be unique
 
 ```bash
 node src/certificates/2.add_certificate
 ```
 
-### 3. Add user and issue certificate
+### 3. Add capability
 
-**TBC**
+**Location**
 
-TBC
+[_src/users/4.add_capability_]() TODO
 
-### 4. Verify identity
+**Background**
 
-**TBC**
+By adding a capability you are issuing a credential of type `memberOf` that the user will later sign (similar to [claim_admin]() TO DO).
 
-TBC
+Execute this process when adding a new user to define their relationship with the organisation.
 
-### 5. Get data e.g. certificates + issuedCertificates
+You can also execute it for existing users: one user can hold many capabilities, e.g. admin and member of customer service.
 
-**TBC**
+**Execution**
 
-TBC
+Run the command below to add a capability to a user. Set `userId` on the `.env` file (see [get_users]() TO DO). Send data as per `userCapability`.
 
-### Final notes re athentication
+The last part of the script is not needed, but demonstrate the process of claiming the new capability. If you run this against your user, your `data/admin.json` will be updated.
 
-**TBC**
-
-TBC
+```bash
+node src/certificates/2.add_certificate
+```
