@@ -30,6 +30,7 @@ const callWorkflow = async (did, workflowId, apiToken) => {
     usuari_currentFamilyName: faker.name.lastName(), // User.realname
     usuari_govId: null, // May not exist
     usuari_email: faker.internet.email(), // User.UserEmail
+    usuari_telephone: "+34 677 88 55 44", // User.mobile
     usuari_additional: {
       id: 64, // User.id
     },
