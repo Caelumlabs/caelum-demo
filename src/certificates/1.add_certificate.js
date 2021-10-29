@@ -8,7 +8,7 @@ const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 const adminInfo = require(path.join(rootPath, "data", "admin.json"));
 
 const addCertificate = async (did) => {
-  // Validate that needed data is available
+  // Validate given params
   if (did == null || did === "") {
     console.error("Missing variables or their values in .env");
     return;
@@ -19,9 +19,9 @@ const addCertificate = async (did) => {
 
   // Certificate example
   const certificateForm = {
-    title: "Spacewalk certificate", // string
-    description: "The astronaut got out of the shuttle while in space", // string | null
-    url: "https://www.nasa.gov", // string | null
+    title: "Certificat de la Diputació de préstec de dispositiu", // string
+    description: "Préstec de dispositius des de LOOP", // string | null
+    url: "https://www.diputaciolleida.cat/", // string | null
     logo: null, // string | null
     requirements: null, // string | null
     issuedTo: "Persona" // string["Nominal", "Organisation", "Persona"] - "Organisation" is default

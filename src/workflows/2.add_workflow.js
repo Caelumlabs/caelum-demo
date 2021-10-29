@@ -14,7 +14,7 @@ const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 const adminInfo = require(path.join(rootPath, "data", "admin.json"));
 
 const addWorkflow = async (did, projectId, workflowNo) => {
-  // Validate that needed data is available
+  // Validate given params
   if (did == null || did === "" ||
     projectId == null || projectId === "") {
     console.error("Missing variables or their values in .env");

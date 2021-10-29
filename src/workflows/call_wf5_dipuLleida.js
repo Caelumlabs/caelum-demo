@@ -8,7 +8,7 @@ const Caelum = require("caelum-sdk");
 const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 
 const callWorkflow = async (did, workflowId, apiToken) => {
-  // Validate that needed data is available
+  // Validate given params
   if (did == null || did === "" ||
     workflowId == null || workflowId === "" ||
     apiToken == null || apiToken === "") {

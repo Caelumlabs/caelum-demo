@@ -8,7 +8,7 @@ const Caelum = require("caelum-sdk");
 const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 
 const claimAdmin = async (did, secretCode) => {
-  // Validate that needed data is available
+  // Validate given params
   if (did == null || did === "" ||
     secretCode == null || secretCode === "") {
     console.error("Missing variables or their values in .env");

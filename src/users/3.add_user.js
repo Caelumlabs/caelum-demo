@@ -8,7 +8,7 @@ const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 const adminInfo = require(path.join(rootPath, "data", "admin.json"));
 
 const addUser = async (did) => {
-  // Validate that needed data is available
+  // Validate given params
   if (did == null || did === "") {
     console.error("Missing variables or their values in .env");
     return;
