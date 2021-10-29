@@ -1,0 +1,113 @@
+{
+  "workflowId": 0,
+  "projectId": 1,
+  "version": 1,
+  "draft": 1,
+  "name": "Certificat de la Diputació de préstec de dispositiu",
+  "description": "Préstec de dispositius des de LOOP",
+  "parties": [
+    {
+      "id": 1,
+      "name": "appLOOP",
+      "type": "API",
+      "capability": null,
+      "did": null,
+      "start": true,
+      "apiToken": null
+    },
+    {
+      "id": 2,
+      "name": "TICGal",
+      "type": "API",
+      "capability": null,
+      "did": null,
+      "start": true,
+      "apiToken": null
+    }
+  ],
+  "documents": [
+    {
+      "id": 1,
+      "name": "usuari",
+      "type": "persona",
+      "hasFile": false,
+      "document": null,
+      "certificateId": null,
+      "specifyFields": false,
+      "fields": false
+    },
+    {
+      "id": 2,
+      "name": "dispositiu",
+      "type": "json",
+      "hasFile": false,
+      "document": null,
+      "certificateId": null,
+      "specifyFields": true,
+      "fields": [
+        {
+          "id": 1,
+          "label": "deviceId",
+          "type": "number",
+          "description": null
+        },
+        {
+          "id": 2,
+          "label": "deviceType",
+          "type": "text",
+          "description": null
+        },
+        {
+          "id": 3,
+          "label": "deviceName",
+          "type": "text",
+          "description": null
+        },
+        {
+          "id": 4,
+          "label": "deviceSerial",
+          "type": "text",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "certificat",
+      "type": "certificate",
+      "hasFile": false,
+      "document": null,
+      "certificateId": 2,
+      "specifyFields": false,
+      "fields": false
+    }
+  ],
+  "actions": [
+    {
+      "id": 1,
+      "scenario": "Alta",
+      "type": "trigger",
+      "action": 1,
+      "party": 1,
+      "document": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "scenario": "Generar certificat",
+      "type": "auto",
+      "party": null,
+      "action": 1,
+      "document": [
+        1,
+        2
+      ],
+      "certificate": 3,
+      "integrationId": null,
+      "endpoint": null
+    }
+  ]
+}
