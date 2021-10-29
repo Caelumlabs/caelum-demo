@@ -34,10 +34,10 @@ const callWorkflow = async (did, workflowId, apiToken) => {
     usuari_additional: {
       id: 64, // User.id
     },
-    dispositiu_deviceId: 17,
-    dispositiu_deviceType: "Computer",
-    dispositiu_deviceName: "Caelum PC02",
-    dispositiu_deviceSerial: "",
+    dispositiu_deviceId: 17, // TICGal id
+    dispositiu_deviceType: "Computer", // Not returned
+    dispositiu_deviceName: "Caelum PC02", // name
+    dispositiu_deviceSerial: "", // serial
     request_id: 0,
   };
 
