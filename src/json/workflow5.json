@@ -73,6 +73,16 @@
     },
     {
       "id": 3,
+      "name": "proof",
+      "type": "file",
+      "hasFile": true,
+      "document": "image",
+      "certificateId": null,
+      "specifyFields": false,
+      "fields": false
+    },
+    {
+      "id": 4,
       "name": "certificat",
       "type": "certificate",
       "hasFile": false,
@@ -89,23 +99,24 @@
       "type": "trigger",
       "action": 1,
       "party": 1,
-      "document": [
-        1,
-        2,
-        3
-      ]
+      "document": [1, 2]
     },
     {
       "id": 2,
+      "scenario": "Upload signature",
+      "type": "trigger",
+      "action": 3,
+      "party": 1,
+      "document": [3]
+    },
+    {
+      "id": 3,
       "scenario": "Generar certificat",
       "type": "auto",
       "party": null,
       "action": 1,
-      "document": [
-        1,
-        2
-      ],
-      "certificate": 3,
+      "document": [1, 2],
+      "certificate": 4,
       "integrationId": null,
       "endpoint": null
     }
