@@ -5,7 +5,7 @@ const path = require("path");
 
 const rootPath = path.join(__dirname, "../../");
 require("dotenv").config({ path: path.join(rootPath, ".env") });
-const filePath = path.join(rootPath, "data", "test.jpg");
+const filePath = path.join(rootPath, "data", "test.png");
 
 const Caelum = require("caelum-sdk");
 const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
@@ -51,9 +51,9 @@ const callWorkflow = async (did, workflowId, apiToken) => {
 
   // Upload image
   const { stateId } = response1;
-  const imageData = fs.readFileSync(filePath);
   const formData = new FormData();
-  formData.append("file", imageData, { filePath, contentType: "image/jpg" });
+  const stream = fs.createReadStream(filePath);
+  formData.append("file", stream, { filePath, contentType: "image/png" });
   formData.append(
     "workflow",
     JSON.stringify({
@@ -63,7 +63,7 @@ const callWorkflow = async (did, workflowId, apiToken) => {
       apiToken,
     }),
   );
-  console.log(formData.file);
+
   const response2 = await idspace.sdk.call("workflow", "upload", { form: formData });
   if (response2 === false) return;
   console.log(response2);

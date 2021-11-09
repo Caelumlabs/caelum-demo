@@ -115,7 +115,7 @@
       "type": "auto",
       "party": null,
       "action": 1,
-      "document": [1, 2],
+      "document": [1, 2, 3],
       "certificate": 4,
       "integrationId": null,
       "endpoint": null
