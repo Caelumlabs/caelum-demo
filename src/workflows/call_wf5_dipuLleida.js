@@ -41,7 +41,8 @@ const callWorkflow = async (did, workflowId, apiToken) => {
     dispositiu_deviceType: "Computer", // Not returned
     dispositiu_deviceName: "Caelum PC02", // name
     dispositiu_deviceSerial: "", // serial
-    request_id: 0,
+    request_appToken: false, // nulls are skipped
+    request_sessionToken: "5pa4sl8ja6hrlpuukk3nj3tqvf" // call to /initSession as per TICGal docs
   };
 
   // Start workflow via SDK
