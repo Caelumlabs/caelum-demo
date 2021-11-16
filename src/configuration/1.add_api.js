@@ -55,6 +55,11 @@ const addApi = async (did) => {
       url: "https://glpi95.tic.gal/apirest.php/Computer/17?expand_dropdowns=true",
       name: "getDeviceById",
     },
+    {
+      method: "POST",
+      url: "https://glpi95.tic.gal/plugins/blockchainid/apirest.php/saveSignature",
+      name: "postSignature",
+    },
   ];
   apiForm = {
     name: "TICGal",

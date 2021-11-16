@@ -19,30 +19,64 @@ const callWorkflow = async (did, workflowId, apiToken) => {
     return;
   }
 
-  // Load User and Idspace
+  // Load User and Idspace (user is Dipu technician)
   const { user, idspace } = await caelum.connect(false, did);
+
+  // Data (e.g. App Loop)
+  const sessionToken = "kr2dnccsps4i7vo8ogogaprou3" // GET https://glpi95.tic.gal/apirest.php/initSession
+
+  const dispositiu = {
+    id: 17, // TICGal id
+    type: "Computer", // Not returned
+    name: "Caelum PC02", // name
+    serial: "", // serial
+  };
+
+  const usuari = {
+    givenName: faker.name.firstName(), // TICGal User.name
+    familyName: faker.name.lastName(), // User.realname
+    govId: null, // Does not exist
+    telephone: "+34 677 88 55 44", // User.mobile
+    additional: {
+      "id": 64 // User.id
+    },
+    get email() {
+      return `${this.givenName.toLowerCase()}@email.com`;
+    }
+  };
+
+  const input = {
+    _filename: ["signature.png"],
+    tech_id: 2, // To Do - will come from idspace user.additional...
+    user_id: usuari.additional.id,
+    type: 1, // To Do - 1 entrega, 2 devolució
+    items: [`${dispositiu.type}|${dispositiu.id}`]
+  };
 
   // Workflow example
   const workflowForm = {
-    stateId: 0,
     workflowId,
-    actionId: 1,
-    partyId: 1,
     apiToken,
-    usuari_currentGivenName: faker.name.firstName(), // TICGal User.name
-    usuari_currentFamilyName: faker.name.lastName(), // User.realname
-    usuari_govId: null, // May not exist
-    usuari_email: faker.internet.email(), // User.UserEmail
-    usuari_telephone: "+34 677 88 55 44", // User.mobile
-    usuari_additional: {
-      id: 64, // User.id
-    },
-    dispositiu_deviceId: 17, // TICGal id
-    dispositiu_deviceType: "Computer", // Not returned
-    dispositiu_deviceName: "Caelum PC02", // name
-    dispositiu_deviceSerial: "", // serial
-    request_appToken: false, // nulls are skipped
-    request_sessionToken: "5pa4sl8ja6hrlpuukk3nj3tqvf" // call to /initSession as per TICGal docs
+    "stateId": 0,
+    "actionId": 1,
+    "partyId": 1,
+
+    "dispositiu_deviceId": dispositiu.id,
+    "dispositiu_deviceType": dispositiu.type,
+    "dispositiu_deviceName": dispositiu.name,
+    "dispositiu_deviceSerial": dispositiu.serial,
+
+    "usuari_currentGivenName": usuari.givenName,
+    "usuari_currentFamilyName": usuari.familyName,
+    "usuari_govId": usuari.govId,
+    "usuari_email": usuari.email,
+    "usuari_telephone": usuari.telephone,
+    "usuari_additional": usuari.additional,
+
+    "request_h_appToken": false, // nulls are skipped
+    "request_h_sessionToken": sessionToken,
+    "request_f_uploadManifest": JSON.stringify(input),
+    "request_f_filename[0]": false,
   };
 
   // Start workflow via SDK

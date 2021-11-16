@@ -93,13 +93,25 @@
       "fields": [
         {
           "id": 1,
-          "label": "appToken",
+          "label": "h_appToken",
           "type": "string",
           "description": null
         },
         {
           "id": 2,
-          "label": "sessionToken",
+          "label": "h_sessionToken",
+          "type": "string",
+          "description": null
+        },
+        {
+          "id": 3,
+          "label": "f_uploadManifest",
+          "type": "string",
+          "description": null
+        },
+        {
+          "id": 4,
+          "label": "f_filename[0]",
           "type": "string",
           "description": null
         }
