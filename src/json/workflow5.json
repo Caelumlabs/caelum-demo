@@ -157,10 +157,10 @@
       "type": "auto",
       "action": 3,
       "party": null,
-      "document": [5],
+      "document": [3, 5],
       "certificate": null,
       "integrationId": 2,
-      "endpoint": "getDeviceById"
+      "endpoint": "postSignature"
     }
   ]
 }

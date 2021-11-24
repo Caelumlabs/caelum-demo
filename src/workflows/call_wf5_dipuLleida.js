@@ -23,7 +23,7 @@ const callWorkflow = async (did, workflowId, apiToken) => {
   const { user, idspace } = await caelum.connect(false, did);
 
   // Data (e.g. App Loop)
-  const sessionToken = "kr2dnccsps4i7vo8ogogaprou3" // GET https://glpi95.tic.gal/apirest.php/initSession
+  const sessionToken = "k4jrp0j4ue5bl9gpahsh0q8u2i" // GET https://glpi95.tic.gal/apirest.php/initSession
 
   const dispositiu = {
     id: 17, // TICGal id
@@ -75,7 +75,7 @@ const callWorkflow = async (did, workflowId, apiToken) => {
 
     "request_h_appToken": false, // nulls are skipped
     "request_h_sessionToken": sessionToken,
-    "request_f_uploadManifest": JSON.stringify(input),
+    "request_f_uploadManifest": JSON.stringify({input}),
     "request_f_filename[0]": false,
   };
 
