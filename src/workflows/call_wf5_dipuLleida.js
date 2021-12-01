@@ -27,6 +27,20 @@ const callWorkflow = async (did, workflowId, apiToken) => {
      App LooP
      ========
   */ 
+  // User info from idspace (this is the person managing devices via LooP)
+  const tecnic = {
+    givenName: faker.name.firstName(),
+    familyName: faker.name.lastName(),
+    govId: null,
+    telephone: "+34 655 66 33 21",
+    additional: {
+      "id": 2 // TICGal User.id
+    },
+    get email() {
+      return `${this.givenName.toLowerCase()}@email.com`;
+    }
+  };
+
   // Request TICGal session token
   const appToken = process.env.INTEGRATION_TICGAL_APP_TOKEN;
   const sessionRes = await axios.get(
@@ -43,20 +57,6 @@ const callWorkflow = async (did, workflowId, apiToken) => {
   if (sessionRes.status !== 200) return "Bad response";
   console.log(sessionRes.data);
   const { session_token } = sessionRes.data;
-
-  // User info from idspace (this is the person managing devices via LooP)
-  const tecnic = {
-    givenName: faker.name.firstName(),
-    familyName: faker.name.lastName(),
-    govId: null,
-    telephone: "+34 655 66 33 21",
-    additional: {
-      "id": 2 // TICGal User.id
-    },
-    get email() {
-      return `${this.givenName.toLowerCase()}@email.com`;
-    }
-  };
 
   // QR Scan returns device, e.g.
   const dispositiu = {
