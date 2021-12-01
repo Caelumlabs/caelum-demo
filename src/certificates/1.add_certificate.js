@@ -20,7 +20,7 @@ const addCertificate = async (did) => {
   // Certificate example
   const certificateForm = {
     title: "Certificat de la Diputació de préstec de dispositiu", // string
-    description: "Préstec de dispositius des de LOOP", // string | null
+    description: "Préstec de dispositius des de LooP", // string | null
     url: "https://www.diputaciolleida.cat/", // string | null
     logo: null, // string | null
     requirements: null, // string | null
