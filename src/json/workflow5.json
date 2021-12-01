@@ -3,12 +3,12 @@
   "projectId": 1,
   "version": 1,
   "draft": 1,
-  "name": "Certificat de la Diputació de préstec v3",
+  "name": "Certificat de la Diputació de préstec v4",
   "description": "Préstec de dispositius des de LOOP",
   "parties": [
     {
       "id": 1,
-      "name": "appLOOP",
+      "name": "appLooP",
       "type": "API",
       "capability": null,
       "did": null,
@@ -19,7 +19,7 @@
   "documents": [
     {
       "id": 1,
-      "name": "usuari",
+      "name": "tecnic",
       "type": "persona",
       "hasFile": false,
       "document": null,
@@ -29,6 +29,16 @@
     },
     {
       "id": 2,
+      "name": "usuari",
+      "type": "persona",
+      "hasFile": false,
+      "document": null,
+      "certificateId": null,
+      "specifyFields": false,
+      "fields": false
+    },
+    {
+      "id": 3,
       "name": "dispositiu",
       "type": "json",
       "hasFile": false,
@@ -63,28 +73,8 @@
       ]
     },
     {
-      "id": 3,
-      "name": "proof",
-      "type": "file",
-      "hasFile": true,
-      "document": "image",
-      "certificateId": null,
-      "specifyFields": false,
-      "fields": false
-    },
-    {
       "id": 4,
-      "name": "certificat",
-      "type": "certificate",
-      "hasFile": false,
-      "document": null,
-      "certificateId": 2,
-      "specifyFields": false,
-      "fields": false
-    },
-    {
-      "id": 5,
-      "name": "request",
+      "name": "PDF",
       "type": "json",
       "hasFile": false,
       "document": null,
@@ -93,29 +83,21 @@
       "fields": [
         {
           "id": 1,
-          "label": "h_appToken",
-          "type": "string",
-          "description": null
-        },
-        {
-          "id": 2,
-          "label": "h_sessionToken",
-          "type": "string",
-          "description": null
-        },
-        {
-          "id": 3,
-          "label": "f_uploadManifest",
-          "type": "string",
-          "description": null
-        },
-        {
-          "id": 4,
-          "label": "f_filename[0]",
+          "label": "hash",
           "type": "string",
           "description": null
         }
       ]
+    },
+    {
+      "id": 5,
+      "name": "certificat",
+      "type": "certificate",
+      "hasFile": false,
+      "document": null,
+      "certificateId": 2,
+      "specifyFields": false,
+      "fields": false
     }
   ],
   "actions": [
@@ -125,42 +107,21 @@
       "type": "trigger",
       "action": 1,
       "party": 1,
-      "document": [1, 2, 5],
+      "document": [1, 2, 3, 4],
       "certificate": null,
       "integrationId": null,
       "endpoint": null
     },
     {
       "id": 2,
-      "scenario": "Upload signature",
-      "type": "trigger",
-      "action": 3,
-      "party": 1,
-      "document": [3],
-      "integrationId": null,
-      "endpoint": null
-    },
-    {
-      "id": 3,
       "scenario": "Generar certificat",
       "type": "auto",
       "action": 1,
       "party": null,
-      "document": [1, 2, 3],
-      "certificate": 4,
+      "document": [1, 2, 3, 4],
+      "certificate": 5,
       "integrationId": null,
       "endpoint": null
-    },
-    {
-      "id": 4,
-      "scenario": "Enviar a TICGal",
-      "type": "auto",
-      "action": 3,
-      "party": null,
-      "document": [3, 5],
-      "certificate": null,
-      "integrationId": 2,
-      "endpoint": "postSignature"
     }
   ]
 }
