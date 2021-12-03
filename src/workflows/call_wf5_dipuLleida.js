@@ -11,6 +11,12 @@ const filePath = path.join(rootPath, "data", "test.png");
 const Caelum = require("caelum-sdk");
 const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
 
+const responseValidator = (endpoint, status) => {
+ if (status !== 200 && status !== 201) {
+  throw(`${endpoint} responded ${status}`);
+ }
+}
+
 const callWorkflow = async (did, workflowId, apiToken) => {
   // Validate given params
   if (did == null || did === "" ||
@@ -27,7 +33,7 @@ const callWorkflow = async (did, workflowId, apiToken) => {
      App LooP
      ========
   */ 
-  // User info from idspace (this is the person managing devices via LooP)
+  // 0. idspace: GET user (this is the person managing devices via LooP)
   const tecnic = {
     givenName: faker.name.firstName(),
     familyName: faker.name.lastName(),
@@ -41,49 +47,67 @@ const callWorkflow = async (did, workflowId, apiToken) => {
     }
   };
 
-  // Request TICGal session token
+  // 1. TICGal: GET initSession (grab a token)
   const appToken = process.env.INTEGRATION_TICGAL_APP_TOKEN;
-  const sessionRes = await axios.get(
-    "https://glpi95.tic.gal/apirest.php/initSession", {
+
+  let endpoint = "https://glpi95.tic.gal/apirest.php/initSession";
+  const initSessionRes = await axios.get(
+    endpoint,
+    {
       auth: {
         "username": process.env.INTEGRATION_TICGAL_USERNAME,
         "password": process.env.INTEGRATION_TICGAL_PASSWORD
       },
-      headers: {
-        "App-Token": appToken,
-      }
+      headers: { "App-Token": appToken }
     }
   )
-  if (sessionRes.status !== 200) return "Bad response";
-  console.log(sessionRes.data);
-  const { session_token } = sessionRes.data;
+  responseValidator(endpoint, initSessionRes.status);
 
-  // QR Scan returns device, e.g.
+  const { session_token } = initSessionRes.data;
+  console.log(session_token);
+
+  // --------------------- >>> QR Scan
   const dispositiu = {
-    id: 17, // TICGal id
-    type: "Computer", // Not returned
-    name: "Caelum PC02", // name
-    serial: "", // serial
+    id: 17, // QR ID
+    type: "Computer", // QR URL
   };
 
-  // Search user by email, e.g.
-  const usuari = {
-    givenName: "Daniel", // TICGal User.name
-    familyName: "Couso", // User.realname
-    govId: null, // ? Don't think it exists
-    telephone: "+34 677 88 55 44", // User.mobile
-    email: "daniel@ticgal.com", // User.UserEmail.email
-    additional: {
-      "id": 64 // User.id
-    },
-  };
-
-  // POST request to TICGals /saveSignature
+  // 2. TICGal: GET deviceById
   const headersConfig = {
     "App-Token": appToken,
     "Session-Token": session_token
   };
+  endpoint = `https://glpi95.tic.gal/apirest.php/${dispositiu.type}/${dispositiu.id}?expand_dropdowns=true`
+  const deviceByIdRes = await axios.get(endpoint, { headers: headersConfig });
+  responseValidator(endpoint, deviceByIdRes.status);
 
+  dispositiu.name = deviceByIdRes.data.name || null;
+  dispositiu.serial = deviceByIdRes.data.serial || null;
+  console.log(dispositiu);
+
+  // 3. TICGal: GET user (by `email` for now)
+  const usuari = {
+    email: "daniel@ticgal.com"
+  };
+
+  endpoint = `https://glpi95.tic.gal/apirest.php/search/User?uid_cols=true&criteria[0][field]=5&criteria[0][searchtype]=contains&criteria[0][value]=${usuari.email}`; 
+  const userByEmailRes = await axios.get(endpoint, { headers: headersConfig });
+  responseValidator(endpoint, userByEmailRes.status);
+
+  userTicGal = userByEmailRes.data.data[0]; // Caution
+  console.log(userTicGal);
+  usuari.givenName = userTicGal["User.name"]|| null;
+  usuari.familyName = userTicGal["User.realname"] || null;
+  usuari.govId = null; // Does not seem to exist
+  usuari.telephone = userTicGal["User.mobile"] || null;
+  usuari.additional = { id: userTicGal["User.id"] };
+  console.log(usuari);
+
+  // 4. User signs and a PNG file is generated
+  // 5. TICGal: GET basicInfo (?) - DO NOT DO THIS FOR NOW
+  // --------------------- >>> Submit form
+
+  // 6. TICGal: POST saveSignature
   const formData = new FormData();
 
   const input = {
@@ -96,18 +120,19 @@ const callWorkflow = async (did, workflowId, apiToken) => {
   formData.append("uploadManifest", JSON.stringify({input}));
 
   const stream = fs.createReadStream(filePath);
-  formData.append("file", stream, { filePath, contentType: "image/png" });
+  formData.append("filename[0]", stream, { filePath, contentType: "image/png" });
   
   Object.assign(headersConfig, formData.getHeaders());
 
-  const signatureRes = await axios.post(
-    "https://glpi95.tic.gal/plugins/blockchainid/apirest.php/saveSignature",
+  endpoint = "https://glpi95.tic.gal/plugins/blockchainid/apirest.php/saveSignature";
+  const saveSignatureRes = await axios.post(
+    endpoint,
     formData,
     { headers: headersConfig }
   );
-  if (signatureRes.status !== 200) return "Bad response";
-  console.log(signatureRes.data);
-  const { hash } = signatureRes.data;
+  responseValidator(endpoint, saveSignatureRes.status);
+  const { hash } = saveSignatureRes.data;
+  console.log(hash);
 
   // Start workflow via SDK
   const workflowForm = {
