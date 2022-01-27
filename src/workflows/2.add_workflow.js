@@ -1,42 +1,66 @@
-const fs = require('fs')
-const path = require('path')
-const faker = require('faker')
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
+const fs = require("fs");
+const path = require("path");
 
-const Caelum = require('caelum-sdk');
-const caelum = new Caelum(process.env.SUBSTRATE);
-const adminInfo = require('../json/admin.json');
+const rootPath = path.join(__dirname, "../../");
+require("dotenv").config({ path: path.join(rootPath, ".env") });
 
-// Main function.
-const setup = async (did, projectId) => {
-  // Load User and Idspace.
-  const {user, idspace} = await caelum.connect(adminInfo, did);
+const readline = require("readline").createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-  // Add one workflow.
-  const workflowForm = require('../json/workflow1.json')
-  workflowForm.projectId = projectId
-  let workflow = await idspace.sdk.call('ide', 'addWorkflow', {data: workflowForm})
-  workflowForm.workflowId = workflow.workflowId
-  // Save the draft.
-  workflow = await idspace.sdk.call('ide', 'saveDraft', {data: workflowForm})
+const Caelum = require("caelum-sdk");
+const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
+const adminInfo = require(path.join(rootPath, "data", "admin.json"));
 
-  // Deploy.
-  workflow = await idspace.sdk.call('ide', 'deploy', {data: workflowForm})
+const addWorkflow = async (did, projectId, workflowNo) => {
+  // Validate given params
+  if (did == null || did === "" ||
+    projectId == null || projectId === "") {
+    console.error("Missing variables or their values in .env");
+    return;
+  }
 
-  // Get Workflow info.
-  workflow = await idspace.sdk.call('ide', 'getOneWorkflow', {params: [workflowForm.workflowId]})
-  const apiToken = workflow.info.parties[0].apiToken
-  console.log('Workflow ID ' + workflowForm.workflowId)
-  console.log('API Token ' + apiToken)
-  process.exit()
+  // Read workflow JSON
+  const fileData = fs.readFileSync(path.join(rootPath, "src/json", `workflow${workflowNo}.json`));
+  const workflowForm = JSON.parse(fileData);
+
+  // Load User and Idspace
+  const { user, idspace } = await caelum.connect(adminInfo, did);
+
+  // Add workflow via SDK
+  workflowForm.projectId = projectId;
+  let res = await idspace.sdk.call("ide", "addWorkflow", { data: workflowForm });
+  console.log("Res ide addWorkflow", res);
+
+  workflowForm.workflowId = res.workflowId;
+
+  // Save workflow as draft
+  res = await idspace.sdk.call("ide", "saveDraft", { data: workflowForm });
+  console.log("Res ide saveDraft", res);
+
+  // Deploy workflow
+  res = await idspace.sdk.call("ide", "deploy", { data: workflowForm });
+  console.log("Res ide deploy", res);
+
+  // Get workflow data (apiToken)
+  res = await idspace.sdk.call("ide", "getOneWorkflow", { params: [workflowForm.workflowId] });
+  console.log("Res ide getOneWorkflow", res);
+
+  return;
+};
+
+const main = async (workflowNo) => {
+  try {
+    await addWorkflow(process.env.DID,
+      process.env.PROJECT_ID,
+      workflowNo);
+  } catch (error) {
+    console.log("Something went wrong!", error);
+  }
+  process.exit();
 }
 
-/**
-* Main
-**/
-const main = async () => {
-  await setup(process.env.DID, process.env.PROJECT_ID)
-}
-main()
-
-
+readline.question("Introduce workflow number (from JSON folder): ", (workflowNo) => {
+  main(workflowNo);
+});

@@ -1,48 +1,47 @@
-const fs = require('fs')
-const path = require('path')
-const faker = require('faker')
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
+const path = require("path")
 
-const Caelum = require('caelum-sdk');
-const caelum = new Caelum(process.env.SUBSTRATE);
-const adminInfo = require('../json/admin.json');
+const rootPath = path.join(__dirname, "../../");
+require("dotenv").config({ path: path.join(rootPath, ".env") });
 
-// Main function.
-const setup = async (did) => {
-  // Load User and Idspace.
-  const {user, idspace} = await caelum.connect(adminInfo, did);
+const Caelum = require("caelum-sdk");
+const caelum = new Caelum(process.env.SUBSTRATE, process.env.NETWORK);
+const adminInfo = require(path.join(rootPath, "data", "admin.json"));
 
-  let tagForm = {
-    title: 'Certificat de reciclatge',
-    description: 'Certificat de Reciclatge per part del ciutadà',
-    url: 'https://valls.cat',
-    logo: 'https://valls.cat',
-    requirements: 'Reciclar',
-    issuedTo: 'Persona'
+const addCertificate = async (did) => {
+  // Validate given params
+  if (did == null || did === "") {
+    console.error("Missing variables or their values in .env");
+    return;
   }
-  let api = await idspace.sdk.call('tag', 'add', {data: tagForm})
-  console.log(api)
-/*
-  tagForm.title = 'Certificat de compostatge'
-  tagForm.description = 'Certificat de Compostatge per part del ciutadà',
-  api = await idspace.sdk.call('tag', 'add', {data: tagForm})
 
-  tagForm.title = 'Certificat de vsita a la deixalleria'
-  tagForm.description = 'Certificat de Visita a la deixalleria i us dels seus serveis',
-  api = await idspace.sdk.call('tag', 'add', {data: tagForm})
+  // Load User and Idspace
+  const { user, idspace } = await caelum.connect(adminInfo, did);
 
-  api = await idspace.sdk.call('api', 'getAll')
-  console.log(' Certificates: ', api.length)
-  */
-  process.exit()
+  // Certificate example
+  const certificateForm = {
+    title: "Certificat de la Diputació de préstec de dispositiu", // string
+    description: "Préstec de dispositius des de LooP", // string | null
+    url: "https://www.diputaciolleida.cat/", // string | null
+    logo: null, // string | null
+    requirements: null, // string | null
+    issuedTo: "Persona" // string["Nominal", "Organisation", "Persona"] - "Organisation" is default
+  }
+
+  // Add certificate (also called "tag") via SDK
+  const response = await idspace.sdk.call("tag", "add", { data: certificateForm });
+  if (response === false) return;  // SDK intercepted bad response
+  console.log(response);
+
+  return;
 }
 
-/**
-* Main
-**/
 const main = async () => {
-  await setup(process.env.DID)
+  try {
+    await addCertificate(process.env.DID);
+  } catch (error) {
+    console.log("Something went wrong!", error);
+  }
+  process.exit();
 }
-main()
 
-
+main();
